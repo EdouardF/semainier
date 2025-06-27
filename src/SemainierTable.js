@@ -14,8 +14,8 @@ function getWeekDates() {
   return week;
 }
 
-function getInitialState(username) {
-  const saved = localStorage.getItem('semainier_' + username);
+function getInitialState(username, medicament) {
+  const saved = localStorage.getItem('semainier_' + username + '_' + medicament);
   if (saved) return JSON.parse(saved);
   const state = {};
   getWeekDates().forEach(date => {
@@ -28,14 +28,14 @@ function getInitialState(username) {
   return state;
 }
 
-export default function SemainierTable({ username }) {
+export default function SemainierTable({ username, medicament }) {
   const { t } = useTranslation();
-  const [taken, setTaken] = useState(() => getInitialState(username));
+  const [taken, setTaken] = useState(() => getInitialState(username, medicament));
   const weekDates = getWeekDates();
 
   useEffect(() => {
-    localStorage.setItem('semainier_' + username, JSON.stringify(taken));
-  }, [taken, username]);
+    localStorage.setItem('semainier_' + username + '_' + medicament, JSON.stringify(taken));
+  }, [taken, username, medicament]);
 
   // Met à jour la structure si la semaine change
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function SemainierTable({ username }) {
       return copy;
     });
     // eslint-disable-next-line
-  }, [username]);
+  }, [username, medicament]);
 
   const toggle = (dateKey, periode) => {
     setTaken(prev => {
@@ -61,40 +61,47 @@ export default function SemainierTable({ username }) {
     });
   };
 
+  if (!medicament) return null;
+
   return (
-    <table className="table-semainier">
-      <thead>
-        <tr>
-          <th></th>
-          {weekDates.map(date => {
-            const day = date.toLocaleDateString(undefined, { weekday: 'short' });
-            const dmy = date.toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' });
-            return <th key={date.toISOString()}>{day}<br/>{dmy}</th>;
-          })}
-        </tr>
-      </thead>
-      <tbody>
-        {periodes.map((p) => (
-          <tr key={p}>
-            <td className="rose">{t(p)}</td>
+    <>
+      <div style={{marginBottom:8, fontWeight:'bold', color:'#d72660'}}>
+        {t('tracking_for') || 'Suivi pour'} : {medicament}
+      </div>
+      <table className="table-semainier">
+        <thead>
+          <tr>
+            <th></th>
             {weekDates.map(date => {
-              const key = date.toISOString().slice(0,10);
-              return (
-                <td key={key}>
-                  <span
-                    className={taken[key]?.[p] ? 'check checked' : 'check unchecked'}
-                    onClick={() => toggle(key, p)}
-                    role="button"
-                    aria-label={taken[key]?.[p] ? t('checked') : t('unchecked')}
-                  >
-                    {taken[key]?.[p] ? '✔️' : '○'}
-                  </span>
-                </td>
-              );
+              const day = date.toLocaleDateString(undefined, { weekday: 'short' });
+              const dmy = date.toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' });
+              return <th key={date.toISOString()}>{day}<br/>{dmy}</th>;
             })}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {periodes.map((p) => (
+            <tr key={p}>
+              <td className="rose">{t(p)}</td>
+              {weekDates.map(date => {
+                const key = date.toISOString().slice(0,10);
+                return (
+                  <td key={key}>
+                    <span
+                      className={taken[key]?.[p] ? 'check checked' : 'check unchecked'}
+                      onClick={() => toggle(key, p)}
+                      role="button"
+                      aria-label={taken[key]?.[p] ? t('checked') : t('unchecked')}
+                    >
+                      {taken[key]?.[p] ? '✔️' : '○'}
+                    </span>
+                  </td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }

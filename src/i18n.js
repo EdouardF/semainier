@@ -26,7 +26,11 @@ const resources = {
       close: 'Fermer',
       enter_username: 'Entrez votre prénom :',
       user: 'Utilisateur',
-      change_user: 'Changer'
+      change_user: 'Changer',
+      add_med: 'Ajouter',
+      add_med_placeholder: 'Ajouter un médicament',
+      select_med: 'Médicament :',
+      tracking_for: 'Suivi pour'
     }
   },
   en: {
@@ -53,7 +57,11 @@ const resources = {
       close: 'Close',
       enter_username: 'Enter your name:',
       user: 'User',
-      change_user: 'Change'
+      change_user: 'Change',
+      add_med: 'Add',
+      add_med_placeholder: 'Add a medication',
+      select_med: 'Medication:',
+      tracking_for: 'Tracking for'
     }
   }
 };
