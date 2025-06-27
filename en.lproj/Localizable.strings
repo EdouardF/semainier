@@ -1,0 +1,17 @@
+"title_main" = "Weekly medication tracker";
+"title_nav" = "Weekly";
+"morning" = "Morning";
+"noon" = "Noon";
+"afternoon" = "Afternoon";
+"evening" = "Evening";
+"mon" = "Mon";
+"tue" = "Tue";
+"wed" = "Wed";
+"thu" = "Thu";
+"fri" = "Fri";
+"sat" = "Sat";
+"sun" = "Sun";
+"notif_times" = "Notification times";
+"reset_week" = "Reset week";
+"notif_title" = "Medication Reminder - %@";
+"notif_body" = "Don't forget to take your medication (%@)!";
