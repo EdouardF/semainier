@@ -2,31 +2,61 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const periodes = ['morning', 'noon', 'afternoon', 'evening'];
-const jours = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
-function getInitialState() {
-  const saved = localStorage.getItem('semainier');
+function getWeekDates() {
+  const today = new Date();
+  const week = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    week.push(d);
+  }
+  return week;
+}
+
+function getInitialState(username) {
+  const saved = localStorage.getItem('semainier_' + username);
   if (saved) return JSON.parse(saved);
   const state = {};
-  periodes.forEach(p => {
-    state[p] = Array(7).fill(false);
+  getWeekDates().forEach(date => {
+    const key = date.toISOString().slice(0,10);
+    state[key] = {};
+    periodes.forEach(p => {
+      state[key][p] = false;
+    });
   });
   return state;
 }
 
-export default function SemainierTable() {
+export default function SemainierTable({ username }) {
   const { t } = useTranslation();
-  const [taken, setTaken] = useState(getInitialState());
+  const [taken, setTaken] = useState(() => getInitialState(username));
+  const weekDates = getWeekDates();
 
   useEffect(() => {
-    localStorage.setItem('semainier', JSON.stringify(taken));
-  }, [taken]);
+    localStorage.setItem('semainier_' + username, JSON.stringify(taken));
+  }, [taken, username]);
 
-  const toggle = (periode, jour) => {
+  // Met à jour la structure si la semaine change
+  useEffect(() => {
     setTaken(prev => {
       const copy = { ...prev };
-      copy[periode] = [...copy[periode]];
-      copy[periode][jour] = !copy[periode][jour];
+      weekDates.forEach(date => {
+        const key = date.toISOString().slice(0,10);
+        if (!copy[key]) {
+          copy[key] = {};
+          periodes.forEach(p => { copy[key][p] = false; });
+        }
+      });
+      return copy;
+    });
+    // eslint-disable-next-line
+  }, [username]);
+
+  const toggle = (dateKey, periode) => {
+    setTaken(prev => {
+      const copy = { ...prev };
+      copy[dateKey] = { ...copy[dateKey], [periode]: !copy[dateKey][periode] };
       return copy;
     });
   };
@@ -36,25 +66,32 @@ export default function SemainierTable() {
       <thead>
         <tr>
           <th></th>
-          {jours.map(j => <th key={j}>{t(j)}</th>)}
+          {weekDates.map(date => {
+            const day = date.toLocaleDateString(undefined, { weekday: 'short' });
+            const dmy = date.toLocaleDateString(undefined, { day: '2-digit', month: '2-digit' });
+            return <th key={date.toISOString()}>{day}<br/>{dmy}</th>;
+          })}
         </tr>
       </thead>
       <tbody>
         {periodes.map((p) => (
           <tr key={p}>
             <td className="rose">{t(p)}</td>
-            {jours.map((_, j) => (
-              <td key={j}>
-                <span
-                  className={taken[p][j] ? 'check checked' : 'check unchecked'}
-                  onClick={() => toggle(p, j)}
-                  role="button"
-                  aria-label={taken[p][j] ? t('checked') : t('unchecked')}
-                >
-                  {taken[p][j] ? '✔️' : '○'}
-                </span>
-              </td>
-            ))}
+            {weekDates.map(date => {
+              const key = date.toISOString().slice(0,10);
+              return (
+                <td key={key}>
+                  <span
+                    className={taken[key]?.[p] ? 'check checked' : 'check unchecked'}
+                    onClick={() => toggle(key, p)}
+                    role="button"
+                    aria-label={taken[key]?.[p] ? t('checked') : t('unchecked')}
+                  >
+                    {taken[key]?.[p] ? '✔️' : '○'}
+                  </span>
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>

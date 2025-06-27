@@ -23,7 +23,10 @@ const resources = {
       notif_body: "N'oubliez pas de prendre vos médicaments ({{periode}}) !",
       settings: 'Réglages',
       save: 'Enregistrer',
-      close: 'Fermer'
+      close: 'Fermer',
+      enter_username: 'Entrez votre prénom :',
+      user: 'Utilisateur',
+      change_user: 'Changer'
     }
   },
   en: {
@@ -47,7 +50,10 @@ const resources = {
       notif_body: "Don't forget to take your medication ({{periode}})!",
       settings: 'Settings',
       save: 'Save',
-      close: 'Close'
+      close: 'Close',
+      enter_username: 'Enter your name:',
+      user: 'User',
+      change_user: 'Change'
     }
   }
 };
