@@ -3,13 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "i18next": "^23.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "i18next": "^23.0.0",
     "react-i18next": "^13.0.0"
   },
+  "homepage": "https://EdouardF.github.io/semainier",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "npx serve -s build",
     "build": "npx react-scripts build"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
