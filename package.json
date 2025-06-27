@@ -1,0 +1,15 @@
+{
+  "name": "semainier-web",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "i18next": "^23.0.0",
+    "react-i18next": "^13.0.0"
+  },
+  "scripts": {
+    "start": "npx serve -s build",
+    "build": "npx react-scripts build"
+  }
+}

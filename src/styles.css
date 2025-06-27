@@ -1,0 +1,69 @@
+body {
+  background: #fff0f6;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.app-container {
+  max-width: 500px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px #eeb6d6;
+  padding: 24px 12px 32px 12px;
+  margin-top: 32px;
+}
+
+h1, h2, h3, .rose {
+  color: #d72660;
+}
+
+.button-rose {
+  background: #d72660;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin: 4px 0;
+  transition: background 0.2s;
+}
+.button-rose:hover {
+  background: #b71c4a;
+}
+
+.table-semainier {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 18px;
+}
+.table-semainier th, .table-semainier td {
+  text-align: center;
+  padding: 6px 2px;
+}
+.table-semainier th {
+  color: #d72660;
+  font-weight: 600;
+}
+.table-semainier td {
+  font-size: 1.2em;
+}
+.check {
+  color: #d72660;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+.check.checked {
+  color: #d72660;
+}
+.check.unchecked {
+  color: #eeb6d6;
+}
+.settings-modal {
+  background: #fff0f6;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 2px 8px #eeb6d6;
+}
